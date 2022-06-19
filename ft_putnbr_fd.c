@@ -6,37 +6,31 @@
 /*   By: sehattor <sehattor@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 20:47:14 by sehattor          #+#    #+#             */
-/*   Updated: 2020/10/12 01:12:11 by sehattor         ###   ########.fr       */
+/*   Updated: 2022/06/19 19:39:13 by sehattor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+static void put_num(long n, int fd)
 {
-	long	num;
-	int		i;
-	int		j;
-	char	ans[13];
+	char c;
+
+	if (n > 9)
+		ft_putnbr_fd(n / 10, fd);
+	c = n % 10 + '0';
+	write(fd, &c, 1);
+}
+
+void ft_putnbr_fd(int n, int fd)
+{
+	long num;
 
 	num = n;
-	i = 0;
 	if (num < 0)
 	{
 		num = -num;
-		write(fd, "-", 1);
+		write(fd, "-", fd);
 	}
-	while (num > 0 || i == 0)
-	{
-		ans[i++] = num % 10 + '0';
-		num /= 10;
-	}
-	j = 0;
-	while (j < i / 2)
-	{
-		n = ans[j];
-		ans[j] = ans[i - j - 1];
-		ans[i - (j++) - 1] = n;
-	}
-	write(fd, ans, i);
+	put_num(num, fd);
 }
